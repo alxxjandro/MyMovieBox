@@ -4,6 +4,15 @@
 </head>
 <body>
   <h1>Browse movies!</h1>
+  <ul>
+    <% movies.map((movie) => { %>
+      <li>
+        <%= movie.name %> <br>
+        <a href="/movies/<%= movie.id %>">movie details</a>
+      </li>
+      <br>
+    <% }) %>
+  </ul>
   <a href="/">Go home...</a>
 </body>
 </html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+  <title>MyMovieBox</title>
+</head>
+<body>
+  <h1>Director: <%= director %> </h1>
+  <p>Movies directed by <%= director %>: </p>
+  <% directorMovies.map((movie) => { %>
+    <li>
+      <%= movie.name %> <br>
+      <a href="/movies/<%= movie.id %>">movie details</a>
+    </li>
+    <br>
+  <% }) %>
+  <a href="/movies">Go back to movies...</a>
+</body>
+</html>

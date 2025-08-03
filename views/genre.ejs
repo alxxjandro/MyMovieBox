@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<head>
+  <title>MyMovieBox</title>
+</head>
+<body>
+  <h1>Genre: <%= genre %> </h1>
+
+  <p><%= genre %> movies: </p>
+  <% movies.map((movie) => { %>
+    <li>
+      <%= movie.name %> <br>
+      <a href="/movies/<%= movie.movie_id %>">movie details</a>
+    </li>
+    <br>
+  <% }) %>
+
+  <a href="/movies">Go back to movies...</a>
+</body>
+</html>
