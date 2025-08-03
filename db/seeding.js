@@ -62,7 +62,8 @@ const fetchMovie = async (search, container) => {
         title: data.Title,
         year: data.Year,
         genres: Array.from(data.Genre.split(" ")).map(genre => genre.replace(/(^,)|(,$)/g, "")),
-        director: data.Director.trim(),
+        director: Array.from(data.Director.split(",")).map(genre => genre.replace(/(^,)|(,$)/g, ""))[0],
+        //for simplicity, a movie has only ONE director!
         img: data.Poster,
         rating: data.imdbRating
       }
@@ -83,21 +84,41 @@ const fetchAllMovies = async () => {
 const populateDB = async (movies) => {
   for (const m of movies) {
     try {
-      console.log(`Processing movie: ${m.title}`);
+      let movieGenres = [];
+      let directorId;
+      let movieId;
 
       if (!(await directorExist(m.director))) {
-        console.log(`Adding a new director: ${m.director}`);
-        await pool.query("INSERT INTO director (name) VALUES ($1)", [m.director]);
+        let id = await pool.query("INSERT INTO director (name) VALUES ($1) RETURNING id", [m.director]);
+        directorId = id.rows[0].id;
+      } else {
+        let result = await pool.query(
+          "SELECT id FROM director WHERE name = $1",
+          [m.director]
+        );
+        directorId = result.rows[0].id;
       }
 
       if (!(await movieExist(m.title))) {
-        await pool.query(
-          "INSERT INTO movie (name, imgurl, year, id_director) VALUES ($1, $2, $3, (SELECT id FROM director WHERE name = $4))",
+        let id = await pool.query(
+          "INSERT INTO movie (name, imgurl, year, id_director) VALUES ($1, $2, $3, (SELECT id FROM director WHERE name = $4)) RETURNING id",
           [m.title, m.img, m.year, m.director]
         );
-      } else {
-        console.log(`Movie: ${m.title} already exist!`);
+        movieId = id.rows[0].id;
+      } 
+
+      for(const g of m.genres){
+        let genre;
+        if (!(await genreExist(g))) {
+          genre = await pool.query("INSERT INTO genre (name) VALUES ($1) RETURNING id", [g]);
+        } else {
+          genre = await pool.query( "SELECT id FROM genre WHERE name = $1",[g]);
+        }
+        movieGenres.push(g);
+        let relationship = await pool.query( "INSERT INTO movie_genre (movie_id, genre_id) VALUES ($1, $2) RETURNING movie_id, genre_id ",[movieId,genre.rows[0].id]);
       }
+
+      console.log(`Movie: ${m.title} \n with ID: ${movieId} \n and director ${m.director} (ID ${directorId}) \n and genres: ${movieGenres} \n processed correctly! \n`)
 
     } catch (e) {
       console.error("An error occurred:", e);
@@ -112,6 +133,11 @@ const directorExist = async (name) => {
 
 const movieExist = async (name) =>{
   const { rows } = await pool.query("SELECT * FROM movie WHERE name = ($1)", [name]);
+  return rows.length === 0 ? false : true;
+}
+
+const genreExist = async (name) =>{
+  const { rows } = await pool.query("SELECT * FROM genre WHERE name = ($1)", [name]);
   return rows.length === 0 ? false : true;
 }
 
