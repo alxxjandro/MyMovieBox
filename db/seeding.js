@@ -142,6 +142,30 @@ const populateDB = async (movies) => {
   }
 };
 
+const createCollections = async () => {
+  const collectionOne = await pool.query(
+    "INSERT INTO collection (name) VALUES ($1) RETURNING id",
+    ["must watch's"],
+  );
+  const collectionTwo = await pool.query(
+    "INSERT INTO collection (name) VALUES ($1) RETURNING id",
+    ["personal favorites"],
+  );
+
+  //hardcode some movies into the collection
+  const ids = [1, 2, 3, 4, 5];
+  for (const id of ids) {
+    await pool.query(
+      "INSERT INTO movie_in_collection (movie_id, collection_id) VALUES ($1, $2)",
+      [id, collectionOne.rows[0].id],
+    );
+    await pool.query(
+      "INSERT INTO movie_in_collection (movie_id, collection_id) VALUES ($1, $2)",
+      [id * 2, collectionTwo.rows[0].id],
+    );
+  }
+};
+
 const directorExist = async (name) => {
   const { rows } = await pool.query(
     "SELECT * FROM director WHERE name = ($1)",
@@ -167,6 +191,7 @@ const genreExist = async (name) => {
 const main = async () => {
   const movies = await fetchAllMovies();
   await populateDB(movies);
+  await createCollections();
   await pool.end();
 };
 main();

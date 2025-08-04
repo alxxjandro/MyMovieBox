@@ -4,6 +4,15 @@
 </head>
 <body>
   <h1>Browse your collections!</h1>
+  
+  <% collections.map((collection) => { %>
+    <li>
+      <%= collection.name %> <br>
+      <a href="/collections/<%= collection.id %>">collection details</a>
+    </li>
+    <br>
+  <% }) %>
+
   <a href="/">Go home...</a>
 </body>
 </html>
