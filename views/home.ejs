@@ -1,11 +1,45 @@
 <!DOCTYPE html>
 <head>
   <title>MyMovieBox</title>
+  <link rel="stylesheet" href="/shared-styles.css">
 </head>
 <body>
-  <h1>Welcome to MyMovieBox</h1>
-  <h2>Start browsing movies and creating collections!</h2>
-  <a href="/movies">Browse Movies!</a>
-  <a href="/collections">Go to my collections!</a>
+  <div class="container">
+    <div class="header">
+      <h1>Welcome to MyMovieBox</h1>
+      <h2>Your personal movie collection manager</h2>
+    </div>
+
+    <nav class="nav">
+      <a href="/movies" class="nav-link">🎬 Browse Movies</a>
+      <a href="/collections" class="nav-link">📚 My Collections</a>
+    </nav>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Discover Movies</div>
+        </div>
+        <div class="card-content">
+          <p>Browse through our extensive collection of movies and add your favorites to custom collections.</p>
+          <div class="card-actions">
+            <a href="/movies" class="btn btn-primary">Start Browsing</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Manage Collections</div>
+        </div>
+        <div class="card-content">
+          <p>Create and organize your movie collections. Keep your favorites organized and easily accessible.</p>
+          <div class="card-actions">
+            <a href="/collections" class="btn btn-primary">View Collections</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

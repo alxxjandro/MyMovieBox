@@ -9,6 +9,7 @@ const genreRouter = require("./routes/genre");
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("views"));
 app.use("/", homeRouter);
 app.use("/movies", moviesRouter);
 app.use("/collections", collectionsRouter);

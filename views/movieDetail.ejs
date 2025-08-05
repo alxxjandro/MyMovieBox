@@ -1,20 +1,52 @@
 <!DOCTYPE html>
 <head>
   <title>MyMovieBox</title>
+  <link rel="stylesheet" href="/shared-styles.css">
 </head>
 <body>
-  <h1><%= movie.name %></h1>
-  <p>Release Year: <%= movie.year%> </p>
-  <p>Director: <a href="/director/<%=directorURL%>"><%= director %></a> </p>
-  <div>
-    <p>Genres: </p>
-    <ul>
-      <% genres.map((g) => { %>
-        <li><a href="/genre/<%= g.id %>"><%= g.name %></a> </li>
-      <% }) %>
-    </ul>
+  <div class="container">
+    <div class="header">
+      <h1><%= movie.name %></h1>
+      <h2>Movie Details</h2>
+    </div>
+
+    <nav class="nav">
+      <a href="/movies" class="nav-link">← Movies</a>
+      <a href="/collections" class="nav-link">Collections</a>
+      <a href="/" class="nav-link">Home</a>
+    </nav>
+
+    <div class="grid">
+      <div class="card">
+        <div class="movie-image">
+          <% if(movie.imgurl) { %>
+            <img src="<%= movie.imgurl %>" alt="<%= movie.name %>" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display: none;">No Image</div>
+          <% } else { %>
+            <div>No Image</div>
+          <% } %>
+        </div>
+        <div class="card-content">
+          <div class="movie-title"><%= movie.name %></div>
+          <div class="form-group">
+            <label class="form-label">Release Year:</label>
+            <p><%= movie.year %></p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Director:</label>
+            <p><a href="/director/<%= directorURL %>" class="btn btn-primary"><%= director %></a></p>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Genres:</label>
+            <div class="card-actions">
+              <% genres.map((g) => { %>
+                <a href="/genre/<%= g.id %>" class="btn btn-secondary"><%= g.name %></a>
+              <% }) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <img src="<%= movie.imgurl%>" alt="">
-  <a href="/movies">Go back...</a>
 </body>
 </html>

@@ -5,7 +5,7 @@ exports.directorGetByID = async (req, res, next) => {
     req.params.name,
   ]);
   const directorMovies = await pool.query(
-    "SELECT id,name FROM movie WHERE id_director = $1",
+    "SELECT id, name, imgurl FROM movie WHERE id_director = $1",
     [rows[0].id],
   );
   res.render("director", {

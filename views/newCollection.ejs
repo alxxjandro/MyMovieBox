@@ -2,14 +2,38 @@
 <html>
 <head>
   <title>MyMovieBox</title>
+  <link rel="stylesheet" href="/shared-styles.css">
 </head>
 <body>
-  <h1>Create new collection</h1>
-  <form action="/collections/new" method="POST">
-    <label for="name">Collection name:</label>
-    <input type="text" id="name" name="name" required>
-    <button type="submit">Create</button>
-  </form>
-  <a href="/collections">Back to collections</a>
+  <div class="container">
+    <div class="header">
+      <h1>Create New Collection</h1>
+      <h2>Organize your movies into custom collections</h2>
+    </div>
+
+    <nav class="nav">
+      <a href="/collections" class="nav-link">← Collections</a>
+      <a href="/movies" class="nav-link">Browse Movies</a>
+      <a href="/" class="nav-link">Home</a>
+    </nav>
+
+    <div class="card" style="max-width: 500px; margin: 0 auto;">
+      <div class="card-header">
+        <div class="card-title">New Collection Details</div>
+      </div>
+      <div class="card-content">
+        <form action="/collections/new" method="POST">
+          <div class="form-group">
+            <label for="name" class="form-label">Collection Name:</label>
+            <input type="text" id="name" name="name" class="form-input" required placeholder="Enter collection name">
+          </div>
+          <div class="card-actions">
+            <button type="submit" class="btn btn-success">Create Collection</button>
+            <a href="/collections" class="btn btn-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,28 +1,52 @@
 <!DOCTYPE html>
 <head>
   <title>MyMovieBox</title>
+  <link rel="stylesheet" href="/shared-styles.css">
 </head>
 <body>
+  <div class="container">
+    <div class="header">
+      <h1><%= name %></h1>
+      <h2>Your Movie Collection</h2>
+    </div>
 
-  <h1><%= name %></h1>
-  <% if(!movies) { %>
-    <h2>this collection's empty...  <a href="/movies">start browsing now </a> </h2>
-  <% } else { %>
-    <h1><%= movies[0].collection %> </h1>
-    <ul>
-      <% movies.map((movie) => { %>
-        <li>
-          <%= movie.movie_name %> <br>
-          <a href="/movies/<%= movie.movie_id %>">movie details</a>
-          <form method="GET" action="/collections/<%= movie.id %>/delete-movie/<%= movie.movie_id %>" style="display: inline;">
-            <button type="submit" onclick="return confirm('Are you sure you want to delete this movie from the collection?')">Delete</button>
-          </form>
-        </li>
-        <br>
-      <% }) %>
-    </ul>
-  <% } %>
+    <nav class="nav">
+      <a href="/collections" class="nav-link">← Collections</a>
+      <a href="/movies" class="nav-link">Browse Movies</a>
+      <a href="/" class="nav-link">Home</a>
+    </nav>
 
-  <a href="/collections">Go to collections...</a>
+    <% if(!movies) { %>
+      <div class="empty-state">
+        <h2>This collection is empty</h2>
+        <p>Start building your collection by adding some movies!</p>
+        <a href="/movies" class="btn btn-primary">Browse Movies</a>
+      </div>
+    <% } else { %>
+      <div class="grid">
+        <% movies.map((movie) => { %>
+          <div class="movie-card">
+            <div class="movie-image">
+              <% if(movie.imgurl) { %>
+                <img src="<%= movie.imgurl %>" alt="<%= movie.movie_name %>" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div style="display: none;">No Image</div>
+              <% } else { %>
+                <div>No Image</div>
+              <% } %>
+            </div>
+            <div class="movie-content">
+              <div class="movie-title"><%= movie.movie_name %></div>
+              <div class="movie-actions">
+                <a href="/movies/<%= movie.movie_id %>" class="btn btn-primary">Details</a>
+                <form method="GET" action="/collections/<%= movie.id %>/delete-movie/<%= movie.movie_id %>" style="display: inline;">
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this movie from the collection?')">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
 </body>
 </html>

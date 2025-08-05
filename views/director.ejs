@@ -1,17 +1,41 @@
 <!DOCTYPE html>
 <head>
   <title>MyMovieBox</title>
+  <link rel="stylesheet" href="/shared-styles.css">
 </head>
 <body>
-  <h1>Director: <%= director %> </h1>
-  <p>Movies directed by <%= director %>: </p>
-  <% directorMovies.map((movie) => { %>
-    <li>
-      <%= movie.name %> <br>
-      <a href="/movies/<%= movie.id %>">movie details</a>
-    </li>
-    <br>
-  <% }) %>
-  <a href="/movies">Go back to movies...</a>
+  <div class="container">
+    <div class="header">
+      <h1>Director: <%= director %></h1>
+      <h2>Filmography</h2>
+    </div>
+
+    <nav class="nav">
+      <a href="/movies" class="nav-link">← Movies</a>
+      <a href="/collections" class="nav-link">Collections</a>
+      <a href="/" class="nav-link">Home</a>
+    </nav>
+
+    <div class="grid">
+      <% directorMovies.map((movie) => { %>
+        <div class="movie-card">
+          <div class="movie-image">
+            <% if(movie.imgurl) { %>
+              <img src="<%= movie.imgurl %>" alt="<%= movie.name %>" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div style="display: none;">No Image</div>
+            <% } else { %>
+              <div>No Image</div>
+            <% } %>
+          </div>
+          <div class="movie-content">
+            <div class="movie-title"><%= movie.name %></div>
+            <div class="movie-actions">
+              <a href="/movies/<%= movie.id %>" class="btn btn-primary">Movie Details</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
 </body>
 </html>

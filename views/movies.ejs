@@ -2,45 +2,66 @@
 <html>
 <head>
   <title>MyMovieBox</title>
+  <link rel="stylesheet" href="/shared-styles.css">
 </head>
 <body>
-  <h1>Browse movies!</h1>
+  <div class="container">
+    <div class="header">
+      <h1>Browse Movies</h1>
+      <h2>Discover and organize your favorite films</h2>
+    </div>
 
-  <% if (typeof added !== "undefined") { %>
-    <script>
-      <% if (added === "true") { %>
-        alert("Movie added to collection!");
-      <% } else if (added === "false") { %>
-        alert("Movie is already in that collection!");
-      <% } else if (added === "error") { %>
-        alert("Something went wrong.");
-      <% } %>
-    </script>
-  <% } %>
+    <nav class="nav">
+      <a href="/" class="nav-link">← Home</a>
+      <a href="/collections" class="nav-link">Collections</a>
+    </nav>
 
-  <ul>
-    <% movies.forEach((movie) => { %>
-      <li>
-        <strong><%= movie.name %></strong><br>
-        <a href="/movies/<%= movie.id %>">Movie details</a>
+    <% if (typeof added !== "undefined") { %>
+      <div class="alert <%= added === 'true' ? 'alert-success' : added === 'false' ? 'alert-error' : 'alert-info' %>">
+        <% if (added === "true") { %>
+          ✅ Movie added to collection successfully!
+        <% } else if (added === "false") { %>
+          ⚠️ Movie is already in that collection!
+        <% } else if (added === "error") { %>
+          ❌ Something went wrong. Please try again.
+        <% } %>
+      </div>
+    <% } %>
 
-        <form action="/collections/add-movie" method="POST">
-          <input type="hidden" name="movie_id" value="<%= movie.id %>">
-          <label for="collection-select-<%= movie.id %>">Add to collection:</label>
-          <select  name="collection_id" id="collection-select-<%= movie.id %>" required>
-            <option value="" disabled selected>Pick a collection</option>
-            <% collections.forEach((collection) => { %>
-              <option value="<%= collection.id %>"><%= collection.name %></option>
-            <% }) %>
-          </select>
-
-          <button type="submit">Add</button>
-        </form>
-      </li>
-      <br>
-    <% }) %>
-  </ul>
-
-  <a href="/">Go home...</a>
+    <div class="grid">
+      <% movies.forEach((movie) => { %>
+        <div class="movie-card">
+          <div class="movie-image">
+            <% if(movie.imgurl) { %>
+              <img src="<%= movie.imgurl %>" alt="<%= movie.name %>" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div style="display: none;">No Image</div>
+            <% } else { %>
+              <div>No Image</div>
+            <% } %>
+          </div>
+          <div class="movie-content">
+            <div class="movie-title"><%= movie.name %></div>
+            <div class="movie-actions">
+              <a href="/movies/<%= movie.id %>" class="btn btn-primary">Movie Details</a>
+              
+              <form action="/collections/add-movie" method="POST" class="form-row">
+                <div class="form-group">
+                  <input type="hidden" name="movie_id" value="<%= movie.id %>">
+                  <label for="collection-select-<%= movie.id %>" class="form-label">Add to collection:</label>
+                  <select name="collection_id" id="collection-select-<%= movie.id %>" class="form-select" required>
+                    <option value="" disabled selected>Pick a collection</option>
+                    <% collections.forEach((collection) => { %>
+                      <option value="<%= collection.id %>"><%= collection.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-success">Add to Collection</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
 </body>
 </html>

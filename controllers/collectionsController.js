@@ -12,7 +12,7 @@ exports.collectionsGetNew = async (req, res, next) => {
 exports.collectionsGetById = async (req, res, next) => {
   const id = req.params.id;
   const collectionsMovies = await pool.query(
-    "SELECT c.name AS collection, c.id, m.movie_id, mo.name AS movie_name FROM collection AS c JOIN movie_in_collection AS m ON c.id = m.collection_id JOIN movie AS mo ON m.movie_id = mo.id WHERE c.id = $1",
+    "SELECT c.name AS collection, c.id, m.movie_id, mo.name AS movie_name, mo.imgurl FROM collection AS c JOIN movie_in_collection AS m ON c.id = m.collection_id JOIN movie AS mo ON m.movie_id = mo.id WHERE c.id = $1",
     [id],
   );
 
@@ -23,8 +23,9 @@ exports.collectionsGetById = async (req, res, next) => {
     res.render("collectionInfo", { name: name.rows[0].name, movies: false });
     return;
   }
+  console.log(collectionsMovies.rows[0]);
   res.render("collectionInfo", {
-    name: collectionsMovies.rows[0].name,
+    name: collectionsMovies.rows[0].collection,
     movies: collectionsMovies.rows,
   });
 };
@@ -37,7 +38,7 @@ exports.collectionsPostNew = async (req, res, next) => {
 
 exports.collectionsPostAddMovie = async (req, res, next) => {
   const { movie_id, collection_id } = req.body;
-
+  console.log(movie_id);
   try {
     const check = await pool.query(
       "SELECT * FROM movie_in_collection WHERE movie_id = $1 AND collection_id = $2",
