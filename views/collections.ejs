@@ -9,10 +9,16 @@
     <li>
       <%= collection.name %> <br>
       <a href="/collections/<%= collection.id %>">collection details</a>
+
+      <form action="/collections/delete/<%= collection.id %>" method="GET">
+        <button onclick="return confirm('Are you sure you want to delete this collection?');" type="submit">delete collection</button>
+      </form>
+
     </li>
     <br>
-  <% }) %>
-
+    <% }) %>
+    
+  <a href="/collections/new">create new collection</a>
   <a href="/">Go home...</a>
 </body>
 </html>

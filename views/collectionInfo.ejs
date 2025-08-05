@@ -3,16 +3,23 @@
   <title>MyMovieBox</title>
 </head>
 <body>
-  <h1><%= movies[0].collection %> </h1>
-  <ul>
-    <% movies.map((movie) => { %>
-      <li>
-        <%= movie.movie_name %> <br>
-        <a href="/movies/<%= movie.movie_id %>">movie details</a>
-      </li>
-      <br>
-    <% }) %>
-  </ul>
+
+  <h1><%= name %></h1>
+  <% if(!movies) { %>
+    <h2>this collection's empty...  <a href="/movies">start browsing now </a> </h2>
+  <% } else { %>
+    <h1><%= movies[0].collection %> </h1>
+    <ul>
+      <% movies.map((movie) => { %>
+        <li>
+          <%= movie.movie_name %> <br>
+          <a href="/movies/<%= movie.movie_id %>">movie details</a>
+        </li>
+        <br>
+      <% }) %>
+    </ul>
+  <% } %>
+
   <a href="/collections">Go to collections...</a>
 </body>
 </html>
