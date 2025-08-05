@@ -1,8 +1,22 @@
 const pool = require("../db/pool");
 
+// exports.moviesGet = async (req, res, next) => {
+//   const { rows } = await pool.query("SELECT * FROM movie");
+//   const avaliableCollections = await pool.query("SELECT * FROM collection");
+//   res.render("movies", { movies: rows, collections: avaliableCollections.rows, req.query });
+// };
+
 exports.moviesGet = async (req, res, next) => {
-  const { rows } = await pool.query("SELECT * FROM movie");
-  res.render("movies", { movies: rows });
+  const { added } = req.query;
+
+  const movies = await pool.query("SELECT * FROM movie");
+  const collections = await pool.query("SELECT * FROM collection");
+
+  res.render("movies", {
+    movies: movies.rows,
+    collections: collections.rows,
+    added,
+  });
 };
 
 exports.movieGetById = async (req, res, next) => {

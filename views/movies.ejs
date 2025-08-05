@@ -1,18 +1,46 @@
 <!DOCTYPE html>
+<html>
 <head>
   <title>MyMovieBox</title>
 </head>
 <body>
   <h1>Browse movies!</h1>
+
+  <% if (typeof added !== "undefined") { %>
+    <script>
+      <% if (added === "true") { %>
+        alert("Movie added to collection!");
+      <% } else if (added === "false") { %>
+        alert("Movie is already in that collection!");
+      <% } else if (added === "error") { %>
+        alert("Something went wrong.");
+      <% } %>
+    </script>
+  <% } %>
+
   <ul>
-    <% movies.map((movie) => { %>
+    <% movies.forEach((movie) => { %>
       <li>
-        <%= movie.name %> <br>
-        <a href="/movies/<%= movie.id %>">movie details</a>
+        <strong><%= movie.name %></strong><br>
+        <a href="/movies/<%= movie.id %>">Movie details</a>
+
+        <form action="/collections/add-movie" method="POST">
+          <input type="hidden" name="movie_id" value="<%= movie.id %>">
+          <label for="collection-select-<%= movie.id %>">Add to collection:</label>
+          <select  name="collection_id" id="collection-select-<%= movie.id %>" required>
+            <option value="" disabled selected>Pick a collection</option>
+            <% collections.forEach((collection) => { %>
+              <option value="<%= collection.id %>"><%= collection.name %></option>
+            <% }) %>
+          </select>
+
+          <button type="submit">Add</button>
+        </form>
       </li>
       <br>
     <% }) %>
   </ul>
+
   <a href="/">Go home...</a>
 </body>
 </html>
