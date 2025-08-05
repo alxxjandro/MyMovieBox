@@ -197,4 +197,4 @@ const seedDB = async () => {
   await pool.end();
   console.log("Seeding done")
 };
-module.exports = seedDB();
+module.exports = seedDB;

@@ -54,4 +54,4 @@ async function createSchema() {
   console.log("schema created correctly");
 }
 
-module.exports = createSchema();
+module.exports = createSchema;
