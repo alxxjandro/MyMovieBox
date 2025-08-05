@@ -43,15 +43,15 @@ const SQL = `
   );
 `;
 
-async function main() {
-  console.log("creating schema...");
+async function createSchema() {
+  console.log("Creating schema...");
   const client = new Client({
     connectionString: process.env.CONNECTION_STRING,
   });
   await client.connect();
   await client.query(SQL);
   await client.end();
-  console.log("done");
+  console.log("schema created correctly");
 }
 
-main();
+module.exports = createSchema();

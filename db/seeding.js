@@ -133,9 +133,9 @@ const populateDB = async (movies) => {
         );
       }
 
-      console.log(
-        `Movie: ${m.title} \n with ID: ${movieId} \n and director ${m.director} (ID ${directorId}) \n and genres: ${movieGenres} \n processed correctly! \n`,
-      );
+      // console.log(
+      //   `Movie: ${m.title} \n with ID: ${movieId} \n and director ${m.director} (ID ${directorId}) \n and genres: ${movieGenres} \n processed correctly! \n`,
+      // );
     } catch (e) {
       console.error("An error occurred:", e);
     }
@@ -188,10 +188,13 @@ const genreExist = async (name) => {
   return rows.length === 0 ? false : true;
 };
 
-const main = async () => {
+const seedDB = async () => {
+  console.log("Seeding db...")
+  console.log("Fetching movies...")
   const movies = await fetchAllMovies();
   await populateDB(movies);
   await createCollections();
   await pool.end();
+  console.log("Seeding done")
 };
-main();
+module.exports = seedDB();

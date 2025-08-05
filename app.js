@@ -7,6 +7,9 @@ const errorRouter = require("./routes/error");
 const directorRouter = require("./routes/director");
 const genreRouter = require("./routes/genre");
 
+const createSchema = require("./db/schema")
+const seedDB = require("./db/seeding");
+
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("views"));
@@ -18,4 +21,9 @@ app.use("/genre", genreRouter);
 app.use("/:error", errorRouter);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Express app listening on port ${PORT}!`));
+app.listen(PORT, async () => {
+  console.log(`Express app listening on port ${PORT}!`)
+  await createSchema();
+  await seedDB();
+
+});
