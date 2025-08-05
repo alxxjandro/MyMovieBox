@@ -194,7 +194,7 @@ const seedDB = async () => {
   const movies = await fetchAllMovies();
   await populateDB(movies);
   await createCollections();
-  await pool.end();
+  // await pool.end(); //remove this for render to work...
   console.log("Seeding done")
 };
 module.exports = seedDB;
